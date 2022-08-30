@@ -1,31 +1,60 @@
-import axios from 'axios';
-import { fetchImg } from './fetch-img';
 import { renderMarkUp } from './card-markup';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import getRefs from './refs-cards';
+import CardApiService from './search-service';
+import CardApiService from './search-service';
 import SimpleLightbox from 'simplelightbox';
+import LoadMoreButton from './load-more-btn';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import './css/styles.css';
-import getRefs from './refs-cards';
 
 const refs = getRefs();
+const cardApiService = new CardApiService();
+// const loadMoreButton = new LoadMoreButton({ selector: '[data-action="load-more]"'})
 
 refs.searchForm.addEventListener('submit', onInputSearch);
-// refs.searchBtn.addEventListener('click', onBtnSearch);
+refs.loadMoreBtn.addEventListener('click', onLoadMore);
 
 function onInputSearch(e) {
 	e.preventDefault();
-	let itemToSearch = e.currentTarget.elements.searchQuery.value;
-	console.log('🚀 ~ itemToSearch', itemToSearch);
-	fetchImg(itemToSearch)
-		.then(r => {
-			if (!r.ok) {
-				throw new Error(r.status);
-			}
-			return r.json();
-		})
-		.then(el => {
-			renderMarkUp(el);
-			console.log('🚀 ~ renderMarkUp(el)', renderMarkUp(el));
-		});
+	clearMarkup();
+	cardApiService.search = e.currentTarget.elements.searchQuery.value;
+
+	cardApiService.resetPage();
+	cardApiService.fetchCards().then(card => {
+		if (card.totalHits === 0) {
+			refs.loadMoreBtn.classList.add('is-hidden');
+			Notify.failure(
+				'Sorry, there are no images matching your search query. Please try again.'
+			);
+
+			return;
+		}
+		renderMarkUp(card.hits);
+		Notify.info(`Hooray! We found ${card.totalHits} images.`);
+		refs.loadMoreBtn.classList.remove('is-hidden');
+		lightbox.refresh();
+	});
 }
 
-// function onBtnSearch() {}
+function onLoadMore() {
+	cardApiService.fetchCards().then(card => {
+		renderMarkUp(card.hits);
+		lightbox.refresh();
+		emptySearch();
+	});
+}
+
+function clearMarkup() {
+	refs.galleryBox.innerHTML = '';
+}
+
+var lightbox = new SimpleLightbox('.gallery a', {
+	captionsData: 'alt',
+	captionDelay: 250,
+	captionPosition: 'outside',
+	animationSpeed: 250,
+	disableRightClick: true,
+	disableScroll: true,
+	scrollZoom: false,
+});
