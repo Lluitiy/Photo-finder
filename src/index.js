@@ -15,14 +15,16 @@ const cardApiService = new CardApiService();
 refs.searchForm.addEventListener('submit', onInputSearch);
 refs.loadMoreBtn.addEventListener('click', onLoadMore);
 
-function onInputSearch(e) {
+async function onInputSearch(e) {
 	e.preventDefault();
 	clearMarkup();
 	cardApiService.search = e.currentTarget.elements.searchQuery.value;
 
 	cardApiService.resetPage();
-	cardApiService.fetchCards().then(card => {
-		if (card.totalHits === 0) {
+
+	try {
+		const fetchResult = await cardApiService.fetchCards();
+		if (fetchResult.data.totalHits === 0) {
 			refs.loadMoreBtn.classList.add('is-hidden');
 			Notify.failure(
 				'Sorry, there are no images matching your search query. Please try again.'
@@ -30,19 +32,25 @@ function onInputSearch(e) {
 
 			return;
 		}
-		renderMarkUp(card.hits);
-		Notify.info(`Hooray! We found ${card.totalHits} images.`);
+		renderMarkUp(fetchResult.data.hits);
+		Notify.info(`Hooray! We found ${fetchResult.data.totalHits} images.`);
 		refs.loadMoreBtn.classList.remove('is-hidden');
 		lightbox.refresh();
-	});
+	} catch (error) {
+		Notify.failure(`Sorry for that mistake it's not mine)))`);
+	}
 }
 
-function onLoadMore() {
-	cardApiService.fetchCards().then(card => {
-		renderMarkUp(card.hits);
+async function onLoadMore() {
+	try {
+		cardApiService.incrementPage();
+		const fetchResult = await cardApiService.fetchCards();
+		renderMarkUp(fetchResult.data.hits);
 		lightbox.refresh();
-		emptySearch();
-	});
+		onScroll();
+	} catch (error) {
+		Notify.failure(`Sorry for that mistake it's not mine)))`);
+	}
 }
 
 function clearMarkup() {
@@ -58,3 +66,13 @@ var lightbox = new SimpleLightbox('.gallery a', {
 	disableScroll: true,
 	scrollZoom: false,
 });
+function onScroll() {
+	const { height: cardHeight } = document
+		.querySelector('.gallery')
+		.firstElementChild.getBoundingClientRect();
+
+	window.scrollBy({
+		top: cardHeight * 2,
+		behavior: 'smooth',
+	});
+}

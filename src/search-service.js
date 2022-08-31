@@ -1,3 +1,4 @@
+import axios from 'axios';
 export default class CardApiService {
 	constructor() {
 		this.itemToSearch = '';
@@ -5,24 +6,27 @@ export default class CardApiService {
 	}
 
 	fetchCards() {
-		return fetch(
+		return axios.get(
 			`https://pixabay.com/api/?key=29569004-5893c866d4c3e100c8eb9cd76&q=${this.itemToSearch}&
             image_type=photo&
             orientation=horizontal&
             safesearch=true&page=${this.page}&per_page=40`
 		)
-			.then(r => {
-				if (!r.ok) {
-					throw new Error(r.status);
-				}
-				return r.json();
-			})
-			.then((data) => {
-				
-				this.page += 1;
-				return data;
-			});
+			// .then(r => {
+			// 	if (!r.ok) {
+			// 		throw new Error(r.status);
+			// 	}
+			// 	return r.json();
+			// })
+			// .then(data => {
+			// 	this.page += 1;
+			// 	return data;
+			// });
 	}
+
+    incrementPage() {
+        this.page += 1;
+    }
 	resetPage() {
 		this.page = 1;
 	}
