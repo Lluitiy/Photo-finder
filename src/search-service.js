@@ -12,16 +12,6 @@ export default class CardApiService {
             orientation=horizontal&
             safesearch=true&page=${this.page}&per_page=40`
 		)
-			// .then(r => {
-			// 	if (!r.ok) {
-			// 		throw new Error(r.status);
-			// 	}
-			// 	return r.json();
-			// })
-			// .then(data => {
-			// 	this.page += 1;
-			// 	return data;
-			// });
 	}
 
     incrementPage() {

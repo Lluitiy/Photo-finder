@@ -8,23 +8,23 @@
 	</head>
 	<body>
 		<header>
-			<form class="search-form" id="search-form">
-				<input
-					type="text"
-					name="searchQuery"
-					autocomplete="off"
-					placeholder="Search images..."
-				/>
-				<button type="submit">Search</button>
-			</form>
+			<div class="header-container">
+				<form class="search-form" id="search-form">
+					<input
+						type="text"
+						name="searchQuery"
+						autocomplete="off"
+						placeholder="Search images..."
+					/>
+					<button type="submit">Search</button>
+				</form>
+			</div>
 		</header>
 		<div class="container">
 			<div class="gallery"></div>
 		</div>
 		<div class="container">
-			<button type="button" class="load-more is-hidden">
-				Load more
-			</button>
+			<button type="button" class="load-more is-hidden">Load more</button>
 		</div>
 		<script src="index.js" type="module"></script>
 	</body>
