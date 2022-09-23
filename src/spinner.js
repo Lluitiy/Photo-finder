@@ -1,12 +1,18 @@
 const getSpinner = () => {
 	const spinner = document.createElement('div');
-	spinner.className = 'trinity-rings-spinner';
+	spinner.className = 'fingerprint-spinner';
 
 	spinner.innerHTML = `
-    <div style="display: flex; height: 10vh; width: 10vw; justify-content: center; align-items: center; ">
-        <div class="circle"></div>
-	    <div class="circle"></div>
-	    <div class="circle"></div>
+    <div position: fixed; display: left: 100; flex; height: 10vh; width: 10vw; justify-content: center; align-items: center;  ">
+        <div class="spinner-ring"></div>
+		<div class="spinner-ring"></div>
+		<div class="spinner-ring"></div>
+		<div class="spinner-ring"></div>
+		<div class="spinner-ring"></div>
+		<div class="spinner-ring"></div>
+		<div class="spinner-ring"></div>
+		<div class="spinner-ring"></div>
+		<div class="spinner-ring"></div>
     </div>
     `;
 

@@ -16,6 +16,9 @@ const cardApiService = new CardApiService();
 refs.searchForm.addEventListener('submit', onInputSearch);
 refs.loadMoreBtn.addEventListener('click', onLoadMore);
 
+function appendSpinner() {
+	refs.galleryBox.append(spinner);
+}
 async function onInputSearch(e) {
 	e.preventDefault();
 	hideBtn();
@@ -86,8 +89,4 @@ function onScroll() {
 
 function hideBtn() {
 	refs.loadMoreBtn.classList.add('is-hidden');
-}
-
-function appendSpinner() {
-	refs.galleryBox.append(spinner);
 }
