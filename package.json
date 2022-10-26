@@ -2,10 +2,10 @@
   "name": "parcel-project-template",
   "version": "2.0.0",
   "description": "",
-  "homepage": "https://lluitiy.github.io/goit-js-hw-11/",
+  "homepage": "https://lluitiy.github.io/Photo-finder/",
   "scripts": {
     "start": "parcel src/*.html -p 999",
-    "build": "parcel build src/*.html --public-url /goit-js-hw-11"
+    "build": "parcel build src/*.html --public-url /Photo-finder"
   },
   "repository": {
     "type": "git",
